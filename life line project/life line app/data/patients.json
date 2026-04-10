@@ -1,0 +1,68 @@
+{
+    "ka 19 re1234": {
+        "vehicle": "ka 19 re1234",
+        "vitals": {
+            "bpm": 126,
+            "spo2": 92
+        },
+        "risk": "MEDIUM \u26a0\ufe0f",
+        "location": {
+            "lat": 13.7116,
+            "lng": 75.8125
+        },
+        "hospital": "City Cardiac Center",
+        "status": "DISPATCHED",
+        "eta": "9 min",
+        "time": "23:02:04",
+        "photo": null
+    },
+    "ka 19 he 6574": {
+        "vehicle": "ka 19 he 6574",
+        "vitals": {
+            "bpm": 74,
+            "spo2": 99
+        },
+        "risk": "LOW \u2705",
+        "location": {
+            "lat": 12.3428,
+            "lng": 76.6241
+        },
+        "hospital": "General Health Hub",
+        "status": "DISPATCHED",
+        "eta": "14 min",
+        "time": "08:11:44",
+        "photo": null
+    },
+    "ka 21 hy 2567": {
+        "vehicle": "ka 21 hy 2567",
+        "user": "guest",
+        "risk": "LOW \u2705",
+        "priority": 3,
+        "assigned_to": "POLICE",
+        "status": "ASSIGNED",
+        "hospital": "General Health Hub",
+        "location": {
+            "lat": 12.3428,
+            "lng": 76.6241
+        },
+        "eta": "10 min",
+        "time": "2026-04-08 09:12:10.868884",
+        "photo": null
+    },
+    "KA 19 LS 9098": {
+        "vehicle": "KA 19 LS 9098",
+        "user": "guest",
+        "risk": "LOW \u2705",
+        "priority": 3,
+        "assigned_to": "POLICE",
+        "status": "ASSIGNED",
+        "hospital": "General Health Hub",
+        "location": {
+            "lat": 13.069108686471985,
+            "lng": 74.99916726919693
+        },
+        "eta": "15 min",
+        "time": "2026-04-10 20:33:09.337571",
+        "photo": null
+    }
+}

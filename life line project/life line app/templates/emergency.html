@@ -1,0 +1,430 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="main-bg">
+
+    <div class="card">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🚑 LIFE LINE SOS</h1>
+            <p class="subtitle">AI Emergency Response System</p>
+        </div>
+
+        <!-- LIVE VITALS -->
+        <div class="vitals">
+            <div class="vital-box" id="vital-bpm">
+                <p>PULSE</p>
+                <h2><span id="bpm">--</span> BPM</h2>
+            </div>
+
+            <div class="vital-box" id="vital-spo2">
+                <p>SpO₂</p>
+                <h2><span id="spo2">--</span>%</h2>
+            </div>
+        </div>
+
+        <!-- AI ALERT -->
+        <div id="alertBox" class="alert">
+            ⚠️ CRITICAL CONDITION DETECTED
+        </div>
+
+        <!-- EMERGENCY ETA -->
+        <div id="etaBox" class="eta">
+            ⏱ Estimated Arrival: -- min
+        </div>
+
+        <!-- QUICK CALL -->
+        <div class="quick-call">
+            <a href="tel:100">100👮 Police 
+            </a>
+            <a href="tel:108">108🚑 Ambulance</a>
+            <a href="tel:102">102🏥 Hospital</a>
+        </div>
+
+        <!-- LIVE MAP -->
+        <div id="map" style="height:220px; border-radius:15px; margin:10px 0;"></div>
+
+        <!-- FORM -->
+        <form id="emergencyForm" method="POST" enctype="multipart/form-data">
+            <input type="text" name="vehicle_number" placeholder="Vehicle Number" required>
+
+            <div class="severity">
+                <label><input type="radio" name="severity" value="1"> Stable</label>
+                <label><input type="radio" name="severity" value="2" checked> Serious</label>
+                <label><input type="radio" name="severity" value="3" id="critical"> Critical</label>
+            </div>
+
+            <input type="hidden" name="lat" id="lat">
+            <input type="hidden" name="lng" id="lng">
+            <input type="hidden" name="bpm" id="bpm-hidden">
+            <input type="hidden" name="spo2" id="spo2-hidden">
+
+            <!-- CAMERA -->
+            <input type="file" id="photo" name="photo" hidden>
+            <button type="button" onclick="photo.click()" class="btn-secondary">
+                📸 Capture Evidence
+            </button>
+
+            <!-- SOS BUTTON -->
+            <button type="submit" class="sos-btn">🚨 SEND EMERGENCY</button>
+        </form>
+
+        <!-- GPS -->
+        <p id="gps">📡 Connecting GPS...</p>
+
+    </div>
+</div>
+<div class="card">
+
+    <h2>🚨 Emergency Request</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <label>Vehicle Number</label>
+        <input type="text" name="vehicle_number" required>
+
+        <label>Upload Evidence</label>
+        <input type="file" name="photo">
+
+        <input type="hidden" name="lat" id="lat">
+        <input type="hidden" name="lng" id="lng">
+
+        <button class="btn btn-danger">🚨 Send Emergency</button>
+    </form>
+
+    <p id="gps">📍 Getting location...</p>
+
+</div>
+<footer class="system-footer">
+    <div class="divider-line"></div>
+    <div class="promo-content">
+        <div class="brand-info">
+            <span class="alpha-logo">Α</span>
+            <div class="brand-text">
+                <p class="group-name">ALPHA GROUP MANGALORE</p>
+                <p class="dev-name">System Lead: <span class="highlight">Shreyas_hegde</span></p>
+            </div>
+        </div>
+        <div class="system-status">
+            <span class="status-dot"></span> V4.2 SECURE
+        </div>
+    </div>
+</footer>
+
+<script>
+navigator.geolocation.watchPosition(pos=>{
+    document.getElementById("lat").value = pos.coords.latitude;
+    document.getElementById("lng").value = pos.coords.longitude;
+
+    document.getElementById("gps").innerText =
+        "📍 "+pos.coords.latitude.toFixed(4)+" , "+pos.coords.longitude.toFixed(4);
+});
+
+// Simulate vitals
+setInterval(() => {
+    const bpm = Math.floor(Math.random() * 40) + 60; // 60-100
+    const spo2 = Math.floor(Math.random() * 10) + 90; // 90-100
+
+    document.getElementById('bpm').textContent = bpm;
+    document.getElementById('spo2').textContent = spo2;
+    document.getElementById('bpm-hidden').value = bpm;
+    document.getElementById('spo2-hidden').value = spo2;
+
+    // Show alert if critical
+    const alertBox = document.getElementById('alertBox');
+    if (bpm > 100 || spo2 < 95) {
+        alertBox.style.display = 'block';
+    } else {
+        alertBox.style.display = 'none';
+    }
+}, 1000);
+</script>
+
+<style>
+/* --- General --- */
+body { margin:0; font-family: 'Orbitron', sans-serif; overflow-x:hidden; background:#010a1f; }
+.main-bg {
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: radial-gradient(circle at top left,#0ff 0%,#020617 100%);
+}
+
+/* --- Card --- */
+.card {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    margin: 40px auto;
+    text-align: center;
+    background: rgba(242, 13, 104, 0.07);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 1px solid rgba(188, 16, 85, 0.15);
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(18, 216, 77, 0.15),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+    animation: fadeIn 1.2s ease-out, glowShift 5s infinite alternate;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes glowShift {
+    0% {
+        box-shadow: 0 0 40px rgba(140, 168, 16, 0.6), 0 0 80px rgba(178, 23, 101, 0.3) inset;
+    }
+    100% {
+        box-shadow: 0 0 60px rgba(171, 16, 16, 0.6), 0 0 100px rgba(42, 13, 122, 0.3) inset;
+    }
+}
+/* --- Header --- */
+.header h1 { color:#ffff; margin:0; text-shadow:0 0 15px rgb(221, 231, 231); }
+.subtitle { color:#ffff; font-size:14px; }
+
+/* --- Vitals --- */
+.vitals { display:flex; gap:10px; margin:20px 0; }
+.vital-box {
+    flex:1;
+    padding:18px;
+    border-radius:15px;
+    background:#111;
+    color:#fff;
+    box-shadow:0 0 10px rgb(4, 8, 43);
+    transition: all 0.3s ease;
+    text-align:center;
+    
+}
+.vital-box p { font-size:12px; color:#0ff; }
+.vital-box h2 { font-size:20px; margin:5px 0; }
+
+/* --- Alert --- */
+.alert {
+    display:none;
+    background:#ff073a;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:15px;
+    animation:pulse 1s infinite;
+    color:white;
+    font-weight:bold;
+    text-shadow:0 0 8px #fff;
+}
+
+/* --- ETA --- */
+.eta {
+    margin:10px 0;
+    padding:10px;
+    border-radius:12px;
+    background: rgba(230, 226, 222, 0.1);
+    color:#0ff;
+    text-shadow:0 0 6px rgb(213, 219, 204);
+}
+
+/* --- Quick Call --- */
+.quick-call { display:flex; justify-content:space-between; margin:15px 0; }
+.quick-call a {
+    flex:1;
+    margin:5px;
+    padding:10px;
+    border-radius:12px;
+    background:#111;
+    color:white;
+    text-decoration:none;
+    box-shadow:0 0 8px #0ff;
+    text-align:center;
+    font-size:14px;
+    transition:0.3s;
+}
+.quick-call a:hover { transform: scale(1.05); }
+
+/* --- Buttons & Inputs --- */
+input { width:100%; padding:12px; margin:10px 0; border-radius:12px; border:none; outline:none; }
+.sos-btn {
+    width:100%;
+    padding:16px;
+    background:#ff073a;
+    color:white;
+    border:none;
+    border-radius:18px;
+    font-size:18px;
+    font-weight:bold;
+    animation:pulse 1s infinite;
+    box-shadow:0 0 20px #ff073a, 0 0 40px #70a424 inset;
+}
+.btn-secondary {
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    background:#0ff;
+    color:#000;
+    box-shadow:0 0 15px #0ff;
+}
+/* --- PREMIER FOOTER STYLING --- */
+.system-footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    text-align: left;
+    border-top: 1px solid rgba(0, 242, 255, 0.1);
+}
+
+.brand-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alpha-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+    background: rgba(0, 242, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 242, 255, 0.3);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.group-name {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #fff;
+    margin: 0;
+}
+
+.dev-name {
+    font-size: 9px;
+    color: #4a6a8a;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.dev-name .highlight {
+    color: var(--neon-blue);
+    font-weight: bold;
+}
+
+.system-status {
+    font-size: 8px;
+    color: #4a6a8a;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    letter-spacing: 1px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: #00ff00;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #00ff00;
+    display: inline-block;
+    animation: blink 2s infinite;
+}
+
+/* Hover effect for the whole branding */
+.system-footer:hover .alpha-logo {
+    background: var(--neon-blue);
+    color: #000;
+    transition: 0.4s;
+}
+
+/* --- Map --- */
+#map { border-radius:15px; box-shadow:0 0 15px #0ff inset; }
+
+/* --- Animations --- */
+@keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.05);} 100% {transform:scale(1);} }
+@keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1;} }
+</style>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script>
+// --- Vitals Simulation ---
+function updateVitals(){
+    let bpm = Math.floor(Math.random()*50)+80;
+    let spo2 = Math.floor(Math.random()*10)+90;
+
+    document.getElementById("bpm").innerText = bpm;
+    document.getElementById("spo2").innerText = spo2;
+
+    const bpmBox = document.getElementById("vital-bpm");
+    const spo2Box = document.getElementById("vital-spo2");
+
+    if(bpm>110 || spo2<92){
+        document.getElementById("alertBox").style.display="block";
+        document.getElementById("critical").checked=true;
+        bpmBox.style.background="#ff073a";
+        spo2Box.style.background="#ff073a";
+    } else {
+        document.getElementById("alertBox").style.display="none";
+        bpmBox.style.background="#111";
+        spo2Box.style.background="#111";
+    }
+}
+setInterval(updateVitals,2000);
+
+// --- GPS & Map ---
+let userLat=12.97, userLng=77.59;
+navigator.geolocation.watchPosition(pos=>{
+    userLat = pos.coords.latitude;
+    userLng = pos.coords.longitude;
+
+    document.getElementById("lat").value=userLat;
+    document.getElementById("lng").value=userLng;
+    document.getElementById("gps").innerText =
+        "📍 "+userLat.toFixed(4)+" , "+userLng.toFixed(4);
+
+    marker.setLatLng([userLat,userLng]);
+    map.setView([userLat,userLng],15);
+});
+
+let map = L.map('map').setView([userLat,userLng],15);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+let marker = L.marker([userLat,userLng]).addTo(map).bindPopup("You are here").openPopup();
+
+// --- Photo AI Detection ---
+document.getElementById("photo").addEventListener("change", function(){
+    let formData = new FormData();
+    formData.append("image", this.files[0]);
+    formData.append("lat", userLat);
+    formData.append("lng", userLng);
+    formData.append("vehicle_number", document.querySelector('input[name="vehicle_number"]').value);
+
+    fetch("/ai_detect", {method:"POST", body: formData})
+    .then(res=>res.json())
+    .then(d=>{
+        if(d.accident_detected){
+            alert("⚠️ Accident detected! Emergency dispatched automatically.");
+        }
+    });
+});
+</script>
+{% endblock %}

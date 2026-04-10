@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="main-bg">
+    <div class="dashboard-card">
+        <h1>🧠 ADMIN DASHBOARD</h1>
+        <p>Total Emergencies: <span id="total">{{ stats.total }}</span></p>
+        <p>Critical Emergencies: <span id="critical">{{ stats.critical }}</span></p>
+
+        <div id="emergency-list">
+            {% for v,e in emergencies.items() %}
+            <div class="emergency-box {% if e.risk=='HIGH 🚨' %}critical{% endif %}">
+                <h3>Vehicle: {{ e.vehicle }}</h3>
+                <p>Risk: {{ e.risk }}</p>
+                <p>Hospital: {{ e.hospital }}</p>
+                <p>Status: {{ e.status }}</p>
+                <p>ETA: {{ e.eta }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background: #0b3c5d;
+    color: white;
+    padding: 10px;
+}
+
+.table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: white;
+}
+
+.high { background: #d32f2f; }
+.medium { background: #f57c00; }
+.low { background: #2e7d32; }
+
+<style>
+body{margin:0;font-family:'Orbitron',sans-serif;}
+.main-bg{min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#020617,#0f172a);}
+.dashboard-card{width:100%;max-width:600px;padding:25px;border-radius:20px;background:rgba(0,0,0,0.4);box-shadow:0 0 30px #0ff;color:#0ff;text-align:center;}
+h1{margin-bottom:15px;text-shadow:0 0 10px #0ff;}
+.emergency-box{padding:15px;margin:10px 0;border-radius:15px;background:#111;box-shadow:0 0 10px #0ff;}
+.emergency-box.critical{background:#ef4444;box-shadow:0 0 20px #ef4444;color:white;}
+</style>
+{% endblock %}

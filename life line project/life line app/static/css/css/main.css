@@ -1,0 +1,111 @@
+/* Main / Emergency Request Page */
+.main-bg {
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#020617,#0f172a);
+}
+
+.vitals { display:flex; gap:10px; margin:20px 0; }
+.vital-box {
+    flex:1;
+    padding:15px;
+    border-radius:15px;
+    text-align:center;
+    color:#fff;
+    box-shadow:0 0 15px #0ff;
+    transition: all 0.3s ease;
+}
+.vital-box.red { background:#ef4444; }
+.vital-box.blue { background:#38bdf8; }
+.vital-box.green { background:#22c55e; }
+
+.alert {
+    display:none;
+    background:#ef4444;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+    animation:pulse 1s infinite;
+    color:white;
+    font-weight:bold;
+    text-align:center;
+}
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f8;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #0b3c5d;
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+/* CONTAINER */
+.container {
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* BUTTON */
+.btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-primary { background: #0b3c5d; color: white; }
+.btn-danger { background: #d32f2f; color: white; }
+.btn-success { background: #2e7d32; color: white; }
+
+.quick-call {
+    display:flex;
+    justify-content:space-between;
+    margin:15px 0;
+}
+.quick-call a {
+    flex:1;
+    margin:5px;
+    padding:10px;
+    border-radius:10px;
+    background:#111;
+    color:white;
+    text-align:center;
+    box-shadow:0 0 5px #0ff;
+}
+
+.sos-btn {
+    width:100%;
+    padding:15px;
+    background:#ef4444;
+    color:white;
+    border:none;
+    border-radius:15px;
+    font-size:18px;
+    font-weight:bold;
+    animation:pulse 1s infinite;
+    box-shadow:0 0 20px #ef4444;
+}
+
+#map { width:100%; height:200px; border-radius:15px; margin:15px 0; box-shadow:0 0 30px #0ff inset; }

@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="main-bg">
+  <div class="card">
+    <h1>🚨 TRACK YOUR EMERGENCY</h1>
+
+    <p>Vehicle: <span id="vehicle">{{ data.vehicle_number if data else '--' }}</span></p>
+    <p>Status: <span id="status">{{ data.status if data else '--' }}</span></p>
+    <p>Risk: <span id="risk">{{ data.risk if data else '--' }}</span></p>
+    <p>Hospital: <span id="hospital">{{ data.hospital if data else '--' }}</span></p>
+    <p>ETA: <span id="eta">{{ data.eta if data else '--' }}</span></p>
+
+    <div id="map" style="height:400px; border-radius:15px;"></div>
+  </div>
+</div>
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="card">
+
+    <h2>🚑 Live Tracking</h2>
+
+    <p><b>Vehicle:</b> {{vehicle_number}}</p>
+    <p><b>Status:</b> {{data.status}}</p>
+    <p><b>Risk:</b> {{data.risk}}</p>
+    <p><b>Hospital:</b> {{data.hospital}}</p>
+    <p><b>ETA:</b> {{data.eta}}</p>
+
+    <div id="map" style="height:300px;"></div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+let lat = {{data.location.lat}};
+let lng = {{data.location.lng}};
+
+let map = L.map('map').setView([lat,lng], 14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+L.marker([lat,lng]).addTo(map).bindPopup("Patient Location").openPopup();
+</script>
+
+{% endblock %}
+
+<style>
+body{margin:0;font-family:'Orbitron',sans-serif;}
+.main-bg{min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#020617,#0f172a);}
+.card{width:100%;max-width:500px;padding:25px;border-radius:20px;background:rgba(0,0,0,0.05);backdrop-filter:blur(20px);box-shadow:0 0 40px #0ff;text-align:center;color:#0ff;}
+h1{text-shadow:0 0 10px #0ff;margin-bottom:15px;}
+</style>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script>
+let map=L.map('map').setView([12.97,77.59],15);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+let vehicleMarker=L.marker([{{ data.location.lat if data else 12.97 }},{{ data.location.lng if data else 77.59 }}])
+  .addTo(map).bindPopup("Emergency Vehicle").openPopup();
+
+function refreshTracking(){
+    fetch("/api/{{ data.vehicle_number if data else '' }}")
+    .then(res=>res.json())
+    .then(d=>{
+        if(d.location){
+            vehicleMarker.setLatLng([d.location.lat,d.location.lng]);
+            map.setView([d.location.lat,d.location.lng],15);
+            document.getElementById("status").innerText=d.status;
+            document.getElementById("risk").innerText=d.risk;
+            document.getElementById("hospital").innerText=d.hospital;
+            document.getElementById("eta").innerText=d.eta;
+        }
+    });
+}
+setInterval(refreshTracking,3000);
+</script>
+{% endblock %}

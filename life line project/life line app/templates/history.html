@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div style="background: #020617; min-height: 100vh; padding: 30px; color: #fff; font-family: 'Inter', sans-serif;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div>
+            <h1 style="margin: 0; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color: #38bdf8;">EMERGENCY HISTORY</h1>
+            <p style="margin: 5px 0 0 0; font-size: 0.7rem; color: #64748b; font-weight: 700;">LIFELINE NEURAL CORE v3.5 | PATIENT RECORDS</p>
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <a href="{{ url_for('emergency') }}" style="text-decoration:none; background:#10b981; color:white; padding:10px 20px; border-radius:12px; font-size:0.7rem; font-weight:800;">NEW EMERGENCY</a>
+            <a href="{{ url_for('logout') }}" style="text-decoration:none; background:#ef4444; color:white; padding:10px 20px; border-radius:12px; font-size:0.7rem; font-weight:800;">LOGOUT</a>
+        </div>
+    </div>
+
+    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b; border-radius: 24px; padding: 25px;">
+        <h3 style="font-size: 0.9rem; margin-bottom: 20px; color: #38bdf8;">PAST EMERGENCIES</h3>
+        
+        {% if emergencies %}
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+            <thead>
+                <tr style="text-align: left; color: #64748b; border-bottom: 1px solid #1e293b;">
+                    <th style="padding: 10px;">VEHICLE ID</th>
+                    <th>RISK LEVEL</th>
+                    <th>HOSPITAL</th>
+                    <th>STATUS</th>
+                    <th>TIME</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v, emergency in emergencies.items() %}
+                <tr style="border-bottom: 1px solid #0f172a;">
+                    <td style="padding: 15px 10px; font-weight: 700;">{{ emergency.vehicle }}</td>
+                    <td>
+                        <span style="color: {{ '#ef4444' if 'HIGH' in emergency.risk else '#f59e0b' if 'MEDIUM' in emergency.risk else '#10b981' }}; font-weight: 800;">
+                            {{ emergency.risk }}
+                        </span>
+                    </td>
+                    <td>{{ emergency.hospital }}</td>
+                    <td>
+                        <span style="background: rgba(56, 189, 248, 0.1); padding: 4px 8px; border-radius: 4px; color: #38bdf8;">
+                            {{ emergency.status }}
+                        </span>
+                    </td>
+                    <td>{{ emergency.time }}</td>
+                    <td>
+                        <a href="{{ url_for('track', v=v) }}" style="background:#38bdf8; border:none; color:white; font-size:0.7rem; font-weight:900; border-radius:4px; cursor:pointer; padding:5px 10px; text-decoration:none;">VIEW</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center; color: #64748b;">No emergency history found.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .admin-card { background: rgba(30, 41, 59, 0.4); border: 1px solid #1e293b; padding: 20px; border-radius: 20px; transition: 0.3s; }
+    .admin-card:hover { transform: translateY(-5px); border-color: #38bdf8; background: rgba(30, 41, 59, 0.6); }
+    .admin-card small { font-size: 0.6rem; font-weight: 800; color: #64748b; letter-spacing: 1px; }
+    .admin-card .value { font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
+    .stat-pill { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 8px 15px; border-radius: 50px; font-size: 0.65rem; font-weight: 900; }
+</style>
+{% endblock %}

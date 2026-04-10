@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<div style="padding: 20px; font-family: 'Segoe UI', sans-serif; background: #f0f2f5;">
+    <h2 style="color: #005EB8; margin-bottom: 20px;">🏥 Life Line: Live Resource Tracker</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        {% for h in hospitals %}
+        <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid {{ '#28a745' if h.resources.status == 'AVAILABLE' else '#d32f2f' }};">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                    <h3 style="margin: 0; color: #333;">{{ h.name }}</h3>
+                    <small style="color: #666;">Specialty: <b>{{ h.specialty }}</b></small>
+                </div>
+                <span style="font-size: 0.7rem; padding: 4px 8px; border-radius: 5px; background: {{ '#e8f5e9' if h.resources.status == 'AVAILABLE' else '#ffebee' }}; color: {{ '#2e7d32' if h.resources.status == 'AVAILABLE' else '#c62828' }}; font-weight: bold;">
+                    {{ h.resources.status }}
+                </span>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
+            <div style="display: flex; justify-content: space-between; text-align: center;">
+                <div style="flex: 1;">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #005EB8;">{{ h.resources.icu_beds }}</div>
+                    <small style="color: #888;">ICU BEDS</small>
+                </div>
+                <div style="flex: 1; border-left: 1px solid #eee; border-right: 1px solid #eee;">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #005EB8;">{{ h.resources.ventilators }}</div>
+                    <small style="color: #888;">VENTILATORS</small>
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #005EB8;">{{ h.resources.oxygen_liters }}L</div>
+                    <small style="color: #888;">OXYGEN</small>
+                </div>
+            </div>
+
+            <button onclick="window.location.href='/tracking/{{ vnum }}'" style="width: 100%; margin-top: 20px; padding: 12px; background: #005EB8; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">
+                ROUTE AMBULANCE HERE 📍
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
